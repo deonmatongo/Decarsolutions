@@ -247,8 +247,12 @@ nav{
 }
 .showreel-video{
   width:100%; display:block; border-radius:8px;
-  aspect-ratio:16 / 9;      /* source is 1920x1080 — reserves space, no CLS */
   object-fit:cover;
+  /* Source is 1920x1080. A fixed ratio at every breakpoint reserves the space
+     up front, so the panel never shifts once the video loads. Taller ratios
+     crop the sides; the frame's content sits within 28.3%-75.8% of its width
+     across the clip, so 1:1 is the tallest crop that clips nothing. */
+  aspect-ratio:4 / 3;
 }
 /* Above the diagram's own breakpoint, match the wide diagram's 980x320 content
    box so the two panels are exactly the same height. The video is 16:9, so
@@ -541,9 +545,9 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
   .hero-cta{flex-direction:column;}
   .hero-cta .btn{justify-content:center;}
   .footer-top{flex-direction:column;}
-  /* a 16:9 box leaves the centred subject tiny on a phone; crop to 4:3
-     (object-fit:cover) so it fills more of the screen */
-  .showreel-video{aspect-ratio:4 / 3;}
+  /* tallest crop that keeps the whole subject, so the video is as large as it
+     can get on a phone */
+  .showreel-video{aspect-ratio:1 / 1;}
   .media-panel{border-radius:16px; padding:20px 16px;}
 }
 
