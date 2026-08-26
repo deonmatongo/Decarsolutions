@@ -1,5 +1,7 @@
 // Themed by CSS custom properties so the diagram works on dark or light
 // surfaces — see --flow-* in globals.css.
+import BrandGradient from "./BrandGradient";
+
 const LINE = "var(--flow-line)";
 const NODE_STROKE = "var(--flow-node-stroke)";
 const NODE_FILL = "var(--flow-node-fill)";
@@ -23,6 +25,10 @@ export default function FlowDiagram() {
   return (
     <div className="flow flow--wide" aria-hidden="true">
       <svg viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          {/* same sweep as the "what we do" figures */}
+          <BrandGradient id="hub-grad-wide" />
+        </defs>
         {/* connector lines */}
         {connectors.map((c) => (
           <path
@@ -73,7 +79,7 @@ export default function FlowDiagram() {
 
         {/* hub */}
         <g transform="translate(490,170)">
-          <circle r="52" fill="var(--amber)" />
+          <circle r="52" fill="url(#hub-grad-wide)" />
           <text y="6" textAnchor="middle" className="hub-label">
             DECAR
           </text>

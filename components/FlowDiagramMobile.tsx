@@ -1,6 +1,8 @@
 // Narrow-screen counterpart to FlowDiagram: the 980x320 wide layout shrinks
 // its 12px labels to ~4px on a phone, so small viewports get this stacked
 // 2x2 -> hub -> output arrangement instead, where the labels stay legible.
+import BrandGradient from "./BrandGradient";
+
 const LINE = "var(--flow-line)";
 const NODE_STROKE = "var(--flow-node-stroke)";
 const NODE_FILL = "var(--flow-node-fill)";
@@ -29,6 +31,10 @@ export default function FlowDiagramMobile() {
   return (
     <div className="flow flow--mobile" aria-hidden="true">
       <svg viewBox="0 0 340 530" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          {/* same sweep as the "what we do" figures */}
+          <BrandGradient id="hub-grad-mobile" />
+        </defs>
         {connectors.map((d) => (
           <path key={d} d={d} fill="none" stroke={LINE} strokeWidth="1.5" />
         ))}
@@ -74,7 +80,7 @@ export default function FlowDiagramMobile() {
         ))}
 
         <g transform="translate(170,325)">
-          <circle r="52" fill="var(--amber)" />
+          <circle r="52" fill="url(#hub-grad-mobile)" />
           <text y="6" textAnchor="middle" className="hub-label">
             DECAR
           </text>

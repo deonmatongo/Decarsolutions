@@ -10,6 +10,8 @@
 // All of it is disabled under prefers-reduced-motion, which leaves the static
 // geometry below on screen.
 
+import BrandGradient from "./BrandGradient";
+
 export type FigureKind = "torus" | "burst" | "barrel" | "globe";
 
 const VB = 200; // viewBox is 200x200
@@ -160,13 +162,7 @@ export default function GenerativeFigure({ kind }: { kind: FigureKind }) {
       focusable="false"
     >
       <defs>
-        {/* brand amber into the logo's own orange -> orange-red sweep
-            (sampled from public/logo.png: #FC7C00 at the top, #FA4300 low) */}
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#FFB454" />
-          <stop offset="50%" stopColor="#FC7C00" />
-          <stop offset="100%" stopColor="#F94300" />
-        </linearGradient>
+        <BrandGradient id={id} />
       </defs>
       {BUILDERS[kind](id)}
     </svg>
