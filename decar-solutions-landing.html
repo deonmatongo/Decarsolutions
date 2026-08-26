@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decar Solutions — Web, Mobile, AI & Automation</title>
+<meta name="description" content="Decar Solutions designs, builds, and automates the software your business runs on — web, mobile, AI, and automation under one roof.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1524;
+    --panel:#141B2E;
+    --panel-2:#1B2440;
+    --paper:#F5F6F2;
+    --ink-text:#0E1524;
+    --muted:#8792AD;
+    --muted-light:#5B6478;
+    --amber:#FFB454;
+    --teal:#5FE3C0;
+    --line:rgba(255,255,255,0.09);
+    --line-soft:rgba(255,255,255,0.05);
+    --display:'Space Grotesk', sans-serif;
+    --body:'IBM Plex Sans', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:#EDEFF5;
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* background circuit texture */
+  .grid-bg{
+    position:absolute; inset:0; pointer-events:none; opacity:0.5;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(14,21,36,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px; max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    font-family:var(--display); font-weight:700; font-size:20px;
+    letter-spacing:0.02em; display:flex; align-items:center; gap:8px;
+  }
+  .logo-mark{
+    width:10px; height:10px; border-radius:2px;
+    background:var(--amber);
+    box-shadow:0 0 0 3px var(--panel-2), 0 0 12px var(--amber);
+  }
+  .nav-links{display:flex; align-items:center; gap:36px;}
+  .nav-links a{
+    font-size:14px; color:var(--muted); font-weight:500;
+    transition:color 0.2s;
+  }
+  .nav-links a:hover{color:#EDEFF5;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--body); font-weight:600; font-size:14px;
+    padding:11px 22px; border-radius:6px;
+    border:1px solid transparent;
+    cursor:pointer; transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--amber); color:#1A1206;}
+  .btn-primary:hover{box-shadow:0 8px 24px rgba(255,180,84,0.35);}
+  .btn-ghost{border-color:var(--line); color:#EDEFF5;}
+  .btn-ghost:hover{border-color:var(--muted);}
+  .btn-sm{padding:9px 16px; font-size:13px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 40px;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
+    color:var(--teal); text-transform:uppercase; margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:''; width:20px; height:1px; background:var(--teal);
+  }
+  .hero h1{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(38px, 6vw, 68px); line-height:1.04;
+    letter-spacing:-0.02em; max-width:820px;
+  }
+  .hero h1 em{
+    font-style:normal; color:var(--amber);
+  }
+  .hero-sub{
+    font-size:18px; color:var(--muted); max-width:560px; margin:26px 0 36px;
+  }
+  .hero-cta{display:flex; gap:14px; margin-bottom:72px;}
+
+  /* signature flow diagram */
+  .flow{
+    position:relative; width:100%; max-width:980px; margin:0 auto;
+  }
+  .flow svg{width:100%; height:auto; display:block;}
+  .flow-pulse{
+    fill:var(--teal);
+    filter:drop-shadow(0 0 6px var(--teal));
+    offset-rotate:0deg;
+  }
+  .pulse-a{offset-path:path("M120,60 C220,60 260,170 400,170");animation:travel 3.2s linear infinite;}
+  .pulse-b{offset-path:path("M340,60 C360,110 380,140 400,170");animation:travel 3.2s linear infinite; animation-delay:0.8s;}
+  .pulse-c{offset-path:path("M640,60 C620,110 600,140 580,170");animation:travel 3.2s linear infinite; animation-delay:1.6s;}
+  .pulse-d{offset-path:path("M860,60 C760,60 720,170 580,170");animation:travel 3.2s linear infinite; animation-delay:2.4s;}
+  @keyframes travel{
+    0%{offset-distance:0%; opacity:0;}
+    8%{opacity:1;}
+    92%{opacity:1;}
+    100%{offset-distance:100%; opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flow-pulse{animation:none !important; opacity:0.9;}
+  }
+  .node-label{
+    font-family:var(--mono); font-size:12px; fill:var(--muted); letter-spacing:0.04em;
+  }
+  .node-label.strong{fill:#EDEFF5; font-weight:500;}
+  .hub-label{font-family:var(--display); font-weight:700; font-size:16px; fill:#0E1524;}
+
+  /* ---------- STATS STRIP ---------- */
+  .stats{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:36px 0;
+  }
+  .stats .wrap{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  }
+  .stat h3{
+    font-family:var(--display); font-size:28px; color:var(--amber); margin-bottom:4px;
+  }
+  .stat p{font-size:13px; color:var(--muted);}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:100px 0;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head .eyebrow{margin-bottom:16px;}
+  .section-head h2{
+    font-family:var(--display); font-weight:600; font-size:clamp(28px,3.6vw,40px);
+    letter-spacing:-0.01em; line-height:1.15;
+  }
+  .section-head p{color:var(--muted); font-size:16px; margin-top:16px;}
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  }
+  .service-card{
+    background:var(--panel); padding:36px 28px; transition:background 0.25s;
+  }
+  .service-card:hover{background:var(--panel-2);}
+  .service-icon{
+    width:38px; height:38px; margin-bottom:24px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .service-card h3{
+    font-family:var(--display); font-size:19px; font-weight:600; margin-bottom:10px;
+  }
+  .service-card p{font-size:14px; color:var(--muted); margin-bottom:22px;}
+  .service-link{
+    font-family:var(--mono); font-size:12px; color:var(--teal);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+
+  /* ---------- WHY ---------- */
+  .why-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:28px;
+  }
+  .why-card{
+    border-left:2px solid var(--amber); padding-left:20px;
+  }
+  .why-card h3{font-family:var(--display); font-size:17px; margin-bottom:8px;}
+  .why-card p{font-size:14px; color:var(--muted);}
+
+  /* ---------- PROCESS ---------- */
+  .process-list{border-top:1px solid var(--line);}
+  .process-row{
+    display:grid; grid-template-columns:80px 220px 1fr; gap:24px;
+    align-items:center; padding:28px 0; border-bottom:1px solid var(--line);
+  }
+  .process-num{font-family:var(--mono); font-size:14px; color:var(--muted);}
+  .process-row h3{font-family:var(--display); font-size:20px; font-weight:600;}
+  .process-row p{color:var(--muted); font-size:14px;}
+
+  /* ---------- WORK ---------- */
+  .work-note{
+    font-family:var(--mono); font-size:12px; color:var(--muted-light);
+    background:var(--panel); border:1px dashed var(--line);
+    padding:10px 16px; border-radius:8px; margin-bottom:40px; display:inline-block;
+  }
+  .work-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .work-card{
+    background:var(--paper); color:var(--ink-text); border-radius:14px; overflow:hidden;
+    display:flex; flex-direction:column; transition:transform 0.25s ease;
+  }
+  .work-card:hover{transform:translateY(-4px);}
+  .work-thumb{
+    height:160px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; color:#B9B6AC;
+    background:
+      repeating-linear-gradient(135deg, #ECEAE3, #ECEAE3 10px, #E4E1D8 10px, #E4E1D8 20px);
+  }
+  .work-body{padding:24px; flex:1; display:flex; flex-direction:column;}
+  .work-tags{display:flex; gap:8px; margin-bottom:14px;}
+  .tag{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.03em;
+    padding:4px 9px; border-radius:20px; background:#E5E9F5; color:#33415C;
+  }
+  .work-body h3{font-family:var(--display); font-size:19px; margin-bottom:8px;}
+  .work-body p{font-size:14px; color:var(--muted-light); flex:1;}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:24px 0; cursor:pointer; font-family:var(--display); font-size:17px; font-weight:500;
+  }
+  .faq-q .plus{color:var(--amber); font-family:var(--mono); font-size:18px; transition:transform 0.2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+    color:var(--muted); font-size:14px;
+  }
+  .faq-item.open .faq-a{max-height:200px; padding-bottom:24px;}
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    text-align:center; padding:110px 0;
+    border-top:1px solid var(--line);
+  }
+  .final-cta h2{
+    font-family:var(--display); font-weight:700; font-size:clamp(30px,4.5vw,46px);
+    letter-spacing:-0.01em; margin-bottom:20px;
+  }
+  .final-cta p{color:var(--muted); margin-bottom:36px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:48px 0;}
+  .footer-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    margin-bottom:36px; flex-wrap:wrap; gap:24px;
+  }
+  .footer-links{display:flex; gap:40px; flex-wrap:wrap;}
+  .footer-col h4{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.1em;
+    color:var(--muted-light); text-transform:uppercase; margin-bottom:14px;
+  }
+  .footer-col a{
+    display:block; font-size:14px; color:var(--muted); margin-bottom:10px; transition:color 0.2s;
+  }
+  .footer-col a:hover{color:#EDEFF5;}
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:24px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--muted-light); flex-wrap:wrap; gap:12px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .nav-links{display:none;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+    .work-grid{grid-template-columns:1fr;}
+    .stats .wrap{grid-template-columns:repeat(2,1fr);}
+    .process-row{grid-template-columns:50px 1fr; grid-template-areas:"num title" "num desc";}
+    .process-row p{grid-column:2;}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px;}
+    .services-grid{grid-template-columns:1fr;}
+    .why-grid{grid-template-columns:1fr;}
+    .stats .wrap{grid-template-columns:1fr 1fr;}
+    .hero{padding-top:64px;}
+    .hero-cta{flex-direction:column;}
+    .footer-top{flex-direction:column;}
+  }
+  :focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="logo-mark"></span>DECAR</div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#contact" class="btn btn-primary btn-sm">Book a Call</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <div class="eyebrow">Web · Mobile · AI · Automation</div>
+    <h1>Four disciplines.<br>One system that <em>ships</em>.</h1>
+    <p class="hero-sub">Decar Solutions designs, builds, and automates the software your business runs on — from the first sketch to the systems that keep running without you.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Start a Project →</a>
+      <a href="#process" class="btn btn-ghost">See how we work</a>
+    </div>
+
+    <div class="flow">
+      <svg viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- connector lines -->
+        <path d="M120,60 C220,60 260,170 400,170" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+        <path d="M340,60 C360,110 380,140 400,170" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+        <path d="M640,60 C620,110 600,140 580,170" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+        <path d="M860,60 C760,60 720,170 580,170" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+        <path d="M580,170 C700,170 760,170 860,225" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" stroke-dasharray="4 5"/>
+
+        <!-- traveling pulses -->
+        <circle class="flow-pulse pulse-a" r="4"/>
+        <circle class="flow-pulse pulse-b" r="4"/>
+        <circle class="flow-pulse pulse-c" r="4"/>
+        <circle class="flow-pulse pulse-d" r="4"/>
+
+        <!-- input nodes -->
+        <g>
+          <circle cx="120" cy="60" r="34" fill="#1B2440" stroke="rgba(255,255,255,0.18)"/>
+          <text x="120" y="56" text-anchor="middle" class="node-label strong">WEB</text>
+          <text x="120" y="72" text-anchor="middle" class="node-label" font-size="9">develop</text>
+        </g>
+        <g>
+          <circle cx="340" cy="60" r="34" fill="#1B2440" stroke="rgba(255,255,255,0.18)"/>
+          <text x="340" y="56" text-anchor="middle" class="node-label strong">MOBILE</text>
+          <text x="340" y="72" text-anchor="middle" class="node-label" font-size="9">develop</text>
+        </g>
+        <g>
+          <circle cx="640" cy="60" r="34" fill="#1B2440" stroke="rgba(255,255,255,0.18)"/>
+          <text x="640" y="56" text-anchor="middle" class="node-label strong">AI</text>
+          <text x="640" y="72" text-anchor="middle" class="node-label" font-size="9">integrate</text>
+        </g>
+        <g>
+          <circle cx="860" cy="60" r="34" fill="#1B2440" stroke="rgba(255,255,255,0.18)"/>
+          <text x="860" y="56" text-anchor="middle" class="node-label strong">AUTOMATE</text>
+          <text x="860" y="72" text-anchor="middle" class="node-label" font-size="9">connect</text>
+        </g>
+
+        <!-- hub -->
+        <circle cx="490" cy="170" r="0" fill="none"/>
+        <g transform="translate(490,170)">
+          <circle r="52" fill="var(--amber)"/>
+          <text y="6" text-anchor="middle" class="hub-label">DECAR</text>
+        </g>
+
+        <!-- output -->
+        <g transform="translate(890,236)">
+          <circle r="26" fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-dasharray="3 4"/>
+          <text y="-36" text-anchor="middle" class="node-label" font-size="10">shipped &amp;</text>
+          <text y="-24" text-anchor="middle" class="node-label" font-size="10">running</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stat"><h3>4</h3><p>disciplines under one roof</p></div>
+    <div class="stat"><h3>1</h3><p>point of contact, start to finish</p></div>
+    <div class="stat"><h3>Weekly</h3><p>delivery &amp; demo cadence</p></div>
+    <div class="stat"><h3>Post-launch</h3><p>support included, not upsold</p></div>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What we do</div>
+      <h2>Every discipline your product needs, working from the same brief.</h2>
+      <p>Most agencies specialize in one layer and leave you to stitch the rest together. Decar builds the whole stack — design, code, intelligence, and the automation that connects it all.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="3" y="6" width="28" height="20" rx="2" stroke="#EDEFF5" stroke-width="1.6"/><path d="M3 11H31" stroke="#EDEFF5" stroke-width="1.6"/><circle cx="7" cy="8.5" r="0.8" fill="#EDEFF5"/><path d="M10 30H24" stroke="var(--amber)" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Web Development</h3>
+        <p>Marketing sites, e-commerce, and web apps built on modern frameworks and made to be fast on day one and day 1,000.</p>
+        <a href="#contact" class="service-link">Explore →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="9" y="3" width="16" height="28" rx="3" stroke="#EDEFF5" stroke-width="1.6"/><line x1="9" y1="25" x2="25" y2="25" stroke="#EDEFF5" stroke-width="1.6"/><circle cx="17" cy="28" r="1" fill="var(--amber)"/></svg>
+        </div>
+        <h3>Mobile Development</h3>
+        <p>Native iOS and Android, or cross-platform when speed matters more than platform-native polish. Your call, our craft.</p>
+        <a href="#contact" class="service-link">Explore →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="6" stroke="#EDEFF5" stroke-width="1.6"/><path d="M17 3V8M17 26V31M3 17H8M26 17H31M7 7L10.5 10.5M23.5 23.5L27 27M27 7L23.5 10.5M10.5 23.5L7 27" stroke="#EDEFF5" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="17" r="2" fill="var(--amber)"/></svg>
+        </div>
+        <h3>AI Solutions</h3>
+        <p>Chatbots, copilots, and predictive tools built where AI actually earns its keep — not bolted on for the pitch deck.</p>
+        <a href="#contact" class="service-link">Explore →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="7" cy="9" r="3.5" stroke="#EDEFF5" stroke-width="1.6"/><circle cx="27" cy="9" r="3.5" stroke="#EDEFF5" stroke-width="1.6"/><circle cx="17" cy="27" r="3.5" stroke="#EDEFF5" stroke-width="1.6"/><path d="M10 10.5L17 24M24 10.5L17 24" stroke="var(--amber)" stroke-width="1.6"/></svg>
+        </div>
+        <h3>Automation</h3>
+        <p>Workflows that connect your CRM, ops, and reporting so your team stops copy-pasting between tabs for a living.</p>
+        <a href="#contact" class="service-link">Explore →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why Decar</div>
+      <h2>One team. Every handoff removed.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <h3>One team, every discipline</h3>
+        <p>No juggling separate vendors for design, dev, AI, and ops — and no translation lost between them.</p>
+      </div>
+      <div class="why-card">
+        <h3>Built to scale</h3>
+        <p>Architecture decisions are made with your next 10x in mind, not just your launch date.</p>
+      </div>
+      <div class="why-card">
+        <h3>Transparent delivery</h3>
+        <p>Fixed milestones, weekly demos, and a shared roadmap — you always know where the project stands.</p>
+      </div>
+      <div class="why-card">
+        <h3>Support that doesn't end at launch</h3>
+        <p>We stay on after go-live to monitor, maintain, and keep improving what we built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How we work</div>
+      <h2>A process built for clarity, not surprises.</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-row">
+        <div class="process-num">01</div>
+        <h3>Discover</h3>
+        <p>We learn your business, your users, and the constraint that actually matters most.</p>
+      </div>
+      <div class="process-row">
+        <div class="process-num">02</div>
+        <h3>Design</h3>
+        <p>Wireframes and prototypes so you see the product before a line of code is written.</p>
+      </div>
+      <div class="process-row">
+        <div class="process-num">03</div>
+        <h3>Build</h3>
+        <p>Agile sprints, weekly demos, and a backlog you can see and reprioritize anytime.</p>
+      </div>
+      <div class="process-row">
+        <div class="process-num">04</div>
+        <h3>Automate</h3>
+        <p>We wire up the workflows and integrations so the system runs itself where it can.</p>
+      </div>
+      <div class="process-row">
+        <div class="process-num">05</div>
+        <h3>Support &amp; scale</h3>
+        <p>Launch day is the start, not the finish. We stay on to monitor, fix, and grow it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Selected work</div>
+      <h2>A sample of the kind of systems we build.</h2>
+      <p>Swap these for your real case studies as they land — keep the same structure: challenge, build, result.</p>
+    </div>
+    <span class="work-note">Placeholder projects — replace with real client work</span>
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-thumb">Project thumbnail</div>
+        <div class="work-body">
+          <div class="work-tags"><span class="tag">Web</span><span class="tag">Automation</span></div>
+          <h3>Warehouse Inventory Platform</h3>
+          <p>A real-time dashboard syncing stock levels across a dozen locations, replacing a spreadsheet three people updated by hand.</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">Project thumbnail</div>
+        <div class="work-body">
+          <div class="work-tags"><span class="tag">Mobile</span><span class="tag">AI</span></div>
+          <h3>Personal Finance Coach App</h3>
+          <p>An iOS/Android app with an AI coach that flags risky spending patterns before they become a real problem.</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">Project thumbnail</div>
+        <div class="work-body">
+          <div class="work-tags"><span class="tag">AI</span><span class="tag">Automation</span></div>
+          <h3>Support Deflection System</h3>
+          <p>A chatbot wired into the ticketing workflow, resolving the majority of Tier-1 requests without a human touch.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Questions we hear before "let's talk."</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q"><span>How long does a typical project take?</span><span class="plus">+</span></div>
+        <div class="faq-a">Most MVPs ship in 6–10 weeks; larger platforms and multi-service builds run longer. You'll get a real timeline after discovery, not a guess.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Do you work with fixed price or hourly billing?</span><span class="plus">+</span></div>
+        <div class="faq-a">Both — fixed-scope projects get a fixed quote; ongoing or evolving work runs on a retainer. We'll recommend whichever fits your project.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Can you build on top of tools we already use?</span><span class="plus">+</span></div>
+        <div class="faq-a">Yes — most automation work connects to your existing CRM, e-commerce platform, or ops tools rather than replacing them.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>What happens after launch?</span><span class="plus">+</span></div>
+        <div class="faq-a">Every project includes a support window post-launch, and ongoing maintenance/growth retainers are available after that.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="contact">
+  <div class="wrap">
+    <h2>Got a project in mind?<br>Let's build it.</h2>
+    <p>Tell us what you're trying to build — we'll tell you honestly whether it needs a website, an app, some AI, some automation, or all four.</p>
+    <a href="mailto:hello@decarsolutions.com" class="btn btn-primary">Book a Free Consultation →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="logo"><span class="logo-mark"></span>DECAR</div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#process">Process</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:hello@decarsolutions.com">hello@decarsolutions.com</a>
+          <a href="#contact">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <h4>Follow</h4>
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+          <a href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Decar Solutions. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
