@@ -22,7 +22,7 @@ export default function Showreel() {
   return (
     <section className="showreel" aria-label="Showreel">
       <div className="wrap">
-        <div className="showreel-frame">
+        <div className="showreel-frame media-panel">
           <video
             ref={videoRef}
             className="showreel-video"

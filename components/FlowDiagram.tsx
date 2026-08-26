@@ -21,7 +21,7 @@ const inputNodes = [
 
 export default function FlowDiagram() {
   return (
-    <div className="flow">
+    <div className="flow flow--wide" aria-hidden="true">
       <svg viewBox="0 0 980 320" xmlns="http://www.w3.org/2000/svg">
         {/* connector lines */}
         {connectors.map((c) => (

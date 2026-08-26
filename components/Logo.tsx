@@ -1,7 +1,23 @@
-export default function Logo({ light = false }: { light?: boolean }) {
+import Image from "next/image";
+
+export default function Logo({
+  light = false,
+  priority = false,
+}: {
+  light?: boolean;
+  priority?: boolean;
+}) {
   return (
     <div className={`logo${light ? " logo--light" : ""}`}>
-      <span className="logo-mark" />
+      {/* decorative — the DECAR wordmark beside it carries the name */}
+      <Image
+        src="/logo.png"
+        alt=""
+        width={300}
+        height={256}
+        className="logo-mark-img"
+        priority={priority}
+      />
       DECAR
     </div>
   );

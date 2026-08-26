@@ -35,7 +35,7 @@ export default function Faq() {
                   </span>
                 </button>
                 <div className="faq-a" id={`faq-answer-${i}`} role="region">
-                  {item.a}
+                  <div className="faq-a-inner">{item.a}</div>
                 </div>
               </div>
             );

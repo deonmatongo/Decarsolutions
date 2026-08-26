@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
   title: "Decar Solutions — Web, Mobile, AI & Automation",
   description:
     "Decar Solutions designs, builds, and automates the software your business runs on — web, mobile, AI, and automation under one roof.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // no maximumScale/userScalable limits — pinch-zoom stays available
 };
 
 export default function RootLayout({

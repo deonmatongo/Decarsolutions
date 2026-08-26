@@ -78,10 +78,9 @@ nav{
   font-family:var(--display); font-weight:700; font-size:20px;
   letter-spacing:0.02em; display:flex; align-items:center; gap:8px;
 }
-.logo-mark{
-  width:10px; height:10px; border-radius:2px;
-  background:var(--amber);
-  box-shadow:0 0 0 3px var(--panel-2), 0 0 12px var(--amber);
+.logo-mark-img{
+  height:26px; width:auto;   /* both axes set, so the 300x256 ratio is kept */
+  display:block; flex:none;
 }
 .nav-links{display:flex; align-items:center; gap:36px;}
 .nav-links a{
@@ -138,24 +137,66 @@ nav{
   font-size:15px; color:var(--ink-1); white-space:nowrap;
 }
 .chevron{flex:none; opacity:0.75;}
-.logo--light{color:var(--ink-1);}
-.logo--light .logo-mark{
-  box-shadow:0 0 0 3px rgba(255,180,84,0.22);
+
+/* ---------- BURGER + MOBILE DRAWER ---------- */
+.burger{
+  display:none;                 /* shown under the desktop-nav breakpoint */
+  width:44px; height:44px;      /* full-size tap target */
+  flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  background:none; border:0; padding:0; cursor:pointer; color:var(--ink-1);
 }
+.burger-bar{
+  display:block; width:24px; height:2px; border-radius:2px;
+  background:currentColor;
+  transition:transform 0.22s ease, opacity 0.22s ease;
+}
+.burger--open .burger-bar:first-child{transform:translateY(4px) rotate(45deg);}
+.burger--open .burger-bar:last-child{transform:translateY(-4px) rotate(-45deg);}
+
+.mobile-menu{
+  position:fixed; inset:0; z-index:200;
+  background:var(--paper-0); color:var(--ink-1);
+  display:flex; flex-direction:column;
+  padding:0 20px calc(28px + env(safe-area-inset-bottom));
+  overflow-y:auto; overscroll-behavior:contain;
+  opacity:0; visibility:hidden; transform:translateY(-6px);
+  transition:opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+}
+.mobile-menu--open{opacity:1; visibility:visible; transform:none;}
+.mobile-menu-top{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0; min-height:64px;
+}
+/* the drawer's list is a <nav>, so it inherits the global `nav` flex rule —
+   reset the parts that don't apply here */
+.mobile-menu-links{
+  display:flex; flex-direction:column;
+  align-items:stretch; justify-content:flex-start;
+  max-width:none; padding:0; margin:8px 0 0;
+}
+.mobile-menu-links a{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:18px 2px;                       /* ~62px tall */
+  font-family:var(--display); font-size:21px; font-weight:500;
+  color:var(--ink-1); border-bottom:1px solid var(--hairline-soft);
+}
+.mobile-menu-links .chevron{width:12px; height:8px;}
+.mobile-menu-foot{
+  margin-top:auto; padding-top:32px;
+  display:flex; flex-direction:column; align-items:stretch; gap:18px;
+}
+.mobile-menu-foot .btn{justify-content:center;}
+.mobile-menu-foot .lang-switch{justify-content:center;}
+@media (prefers-reduced-motion: reduce){
+  .mobile-menu{transition:none;}
+  .burger-bar{transition:none;}
+}
+.logo--light{color:var(--ink-1);}
 
 /* ---------- LIGHT HERO ---------- */
 .hero--light{
   background:var(--paper-0); color:var(--ink-1);
-  padding:clamp(72px,10vw,132px) 0 clamp(64px,7vw,96px);
-  /* light-surface overrides for the flow diagram */
-  --flow-line:rgba(14,21,36,0.18);
-  --flow-node-fill:#FFFFFF;
-  --flow-node-stroke:rgba(14,21,36,0.16);
-  --flow-label:var(--ink-2);
-  --flow-label-strong:var(--ink-1);
-  --flow-pulse:var(--teal-deep);
-  --flow-accent:var(--teal-deep);
-  --flow-glow:0 0 5px rgba(15,165,127,0.45);
+  padding:clamp(72px,10vw,132px) 0 0;
 }
 .hero-headline{
   font-family:var(--display); font-weight:500;
@@ -191,29 +232,52 @@ nav{
 }
 .hero-lede .hero-cta{margin-bottom:0;}
 
-/* ---------- SHOWREEL ---------- */
-.showreel{
-  background:var(--paper-0);
-  padding:0 0 clamp(64px,8vw,112px);
-}
-.showreel-frame{
-  position:relative;
-  aspect-ratio:16 / 9;      /* source is 1920x1080 — reserves space, no CLS */
-  border-radius:24px; overflow:hidden;
-  background:var(--paper-1);
-  border:1px solid var(--hairline-soft);
-}
-.showreel-video{
-  width:100%; height:100%; display:block; object-fit:cover;
-}
-
-/* grey panel holding the flow diagram */
-.flow-panel{
-  margin-top:clamp(48px,6vw,84px);
+/* ---------- MEDIA PANELS (showreel + flow diagram) ---------- */
+/* One shell for both, so identical padding + identical content aspect ratio
+   resolves to identical panel heights at every width. */
+.media-panel{
   background:var(--paper-1);
   border:1px solid var(--hairline-soft);
   border-radius:24px;
   padding:clamp(28px,4vw,56px) clamp(20px,3vw,40px);
+}
+.showreel{
+  background:var(--paper-0);
+  padding:clamp(48px,6vw,84px) 0 0;
+}
+.showreel-video{
+  width:100%; display:block; border-radius:8px;
+  aspect-ratio:16 / 9;      /* source is 1920x1080 — reserves space, no CLS */
+  object-fit:cover;
+}
+/* Above the diagram's own breakpoint, match the wide diagram's 980x320 content
+   box so the two panels are exactly the same height. The video is 16:9, so
+   cover crops ~1% off the top and bottom of the frame here. */
+@media (min-width:861px){
+  .showreel-video{
+    aspect-ratio:980 / 320;
+    /* .flow caps the diagram at 980px, so the video needs the same cap or the
+       two panels drift apart on wide screens */
+    max-width:980px; margin-inline:auto;
+  }
+}
+
+/* The light-surface palette lives on the panel holding the diagram, so it
+   applies wherever that panel is placed (it used to hang off .hero--light). */
+.flow-panel{
+  --flow-line:rgba(14,21,36,0.18);
+  --flow-node-fill:#FFFFFF;
+  --flow-node-stroke:rgba(14,21,36,0.16);
+  --flow-label:var(--ink-2);
+  --flow-label-strong:var(--ink-1);
+  --flow-pulse:var(--teal-deep);
+  --flow-accent:var(--teal-deep);
+  --flow-glow:0 0 5px rgba(15,165,127,0.45);
+}
+
+.flow-section{
+  background:var(--paper-0);
+  padding:clamp(20px,2.5vw,32px) 0 clamp(64px,8vw,112px);
 }
 @media (max-width:720px){
   .headline-split{
@@ -254,6 +318,7 @@ nav{
 .flow{
   position:relative; width:100%; max-width:980px; margin:0 auto;
 }
+.flow--mobile{display:none;}
 .flow svg{width:100%; height:auto; display:block;}
 .flow-pulse{
   fill:var(--flow-pulse);
@@ -264,6 +329,11 @@ nav{
 .pulse-b{offset-path:path("M340,60 C360,110 380,140 400,170");animation:travel 3.2s linear infinite; animation-delay:0.8s;}
 .pulse-c{offset-path:path("M640,60 C620,110 600,140 580,170");animation:travel 3.2s linear infinite; animation-delay:1.6s;}
 .pulse-d{offset-path:path("M860,60 C760,60 720,170 580,170");animation:travel 3.2s linear infinite; animation-delay:2.4s;}
+/* stacked mobile diagram — must match `connectors` in FlowDiagramMobile.tsx */
+.pulse-m1{offset-path:path("M47,55 C8,90 8,260 125,308");animation:travel 3.2s linear infinite;}
+.pulse-m2{offset-path:path("M293,55 C332,90 332,260 215,308");animation:travel 3.2s linear infinite; animation-delay:0.8s;}
+.pulse-m3{offset-path:path("M85,218 C85,270 118,298 128,310");animation:travel 3.2s linear infinite; animation-delay:1.6s;}
+.pulse-m4{offset-path:path("M255,218 C255,270 222,298 212,310");animation:travel 3.2s linear infinite; animation-delay:2.4s;}
 @keyframes travel{
   0%{offset-distance:0%; opacity:0;}
   8%{opacity:1;}
@@ -293,7 +363,7 @@ nav{
 .stat p{font-size:13px; color:var(--muted);}
 
 /* ---------- SECTION HEADERS ---------- */
-.section{padding:100px 0;}
+.section{padding:clamp(64px,9vw,100px) 0;}
 .section-flush-top{padding-top:0;}
 .section-head{max-width:640px; margin-bottom:56px;}
 .section-head .eyebrow{margin-bottom:16px;}
@@ -319,10 +389,11 @@ nav{
 .service-card h3{
   font-family:var(--display); font-size:19px; font-weight:600; margin-bottom:10px;
 }
-.service-card p{font-size:14px; color:var(--muted); margin-bottom:22px;}
+.service-card p{font-size:14px; color:var(--muted); margin-bottom:10px;}
 .service-link{
   font-family:var(--mono); font-size:12px; color:var(--teal);
   display:inline-flex; align-items:center; gap:6px;
+  padding:12px 0;              /* >=24px tap target (WCAG 2.5.8) */
 }
 
 /* ---------- WHY ---------- */
@@ -381,15 +452,23 @@ nav{
 }
 .faq-q .plus{color:var(--amber); font-family:var(--mono); font-size:18px; transition:transform 0.2s;}
 .faq-item.open .plus{transform:rotate(45deg);}
+/* grid-template-rows animates to the answer's real height, so a long answer
+   on a narrow screen can't be clipped the way a fixed max-height clips it */
 .faq-a{
-  max-height:0; overflow:hidden; transition:max-height 0.3s ease;
+  display:grid; grid-template-rows:0fr;
+  transition:grid-template-rows 0.3s ease;
   color:var(--muted); font-size:14px;
 }
-.faq-item.open .faq-a{max-height:200px; padding-bottom:24px;}
+.faq-a-inner{overflow:hidden;}
+.faq-item.open .faq-a{grid-template-rows:1fr;}
+.faq-item.open .faq-a-inner{padding-bottom:24px;}
+@media (prefers-reduced-motion: reduce){
+  .faq-a{transition:none;}
+}
 
 /* ---------- FINAL CTA ---------- */
 .final-cta{
-  text-align:center; padding:110px 0;
+  text-align:center; padding:clamp(72px,10vw,110px) 0;
   border-top:1px solid var(--line);
 }
 .final-cta h2{
@@ -399,7 +478,7 @@ nav{
 .final-cta p{color:var(--muted); margin-bottom:36px;}
 
 /* ---------- FOOTER ---------- */
-footer{border-top:1px solid var(--line); padding:48px 0;}
+footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
 .footer-top{
   display:flex; justify-content:space-between; align-items:flex-start;
   margin-bottom:36px; flex-wrap:wrap; gap:24px;
@@ -410,7 +489,8 @@ footer{border-top:1px solid var(--line); padding:48px 0;}
   color:var(--muted-light); text-transform:uppercase; margin-bottom:14px;
 }
 .footer-col a{
-  display:block; font-size:14px; color:var(--muted); margin-bottom:10px; transition:color 0.2s;
+  display:block; font-size:14px; color:var(--muted); transition:color 0.2s;
+  padding:11px 0;              /* >=24px tap target (WCAG 2.5.8) */
 }
 .footer-col a:hover{color:#EDEFF5;}
 .footer-bottom{
@@ -420,8 +500,28 @@ footer{border-top:1px solid var(--line); padding:48px 0;}
 }
 
 /* ---------- RESPONSIVE ---------- */
-@media (max-width:900px){
+
+/* below this the six inline links no longer fit beside the logo and CTA */
+@media (max-width:1023px){
   .nav-links{display:none;}
+  .burger{display:flex;}
+  .nav-actions .lang-switch{display:none;}
+  /* the Contact Us pill sits in the drawer, not beside the burger */
+  .nav-actions .nav-cta{display:none;}
+  .nav--light{grid-template-columns:1fr auto; padding:16px 32px;}
+}
+/* The wide diagram's 12px labels scale with its 980-unit viewBox, so they fall
+   under ~10px well before phone widths — tablets get the stacked one too. */
+@media (max-width:860px){
+  .flow--wide{display:none;}
+  .flow--mobile{display:block; max-width:400px; margin:0 auto;}
+}
+@media (max-width:720px){
+  .flow--mobile{max-width:340px;}
+  .media-panel{padding:24px 16px;}
+}
+
+@media (max-width:900px){
   .services-grid{grid-template-columns:repeat(2,1fr);}
   .why-grid{grid-template-columns:repeat(2,1fr);}
   .work-grid{grid-template-columns:1fr;}
@@ -431,11 +531,46 @@ footer{border-top:1px solid var(--line); padding:48px 0;}
 }
 @media (max-width:560px){
   .wrap{padding:0 20px;}
+  .nav--light{padding:14px 20px;}
+  .mobile-menu{padding-left:20px; padding-right:20px;}
   .services-grid{grid-template-columns:1fr;}
+  .service-card{padding:30px 22px;}
   .why-grid{grid-template-columns:1fr;}
   .stats .wrap{grid-template-columns:1fr 1fr;}
   .hero{padding-top:64px;}
   .hero-cta{flex-direction:column;}
+  .hero-cta .btn{justify-content:center;}
   .footer-top{flex-direction:column;}
+  /* a 16:9 box leaves the centred subject tiny on a phone; crop to 4:3
+     (object-fit:cover) so it fills more of the screen */
+  .showreel-video{aspect-ratio:4 / 3;}
+  .media-panel{border-radius:16px; padding:20px 16px;}
+}
+
+/* mobile typography + spacing rhythm */
+@media (max-width:720px){
+  .hero--light{padding-top:clamp(48px,11vw,72px);}
+  /* the split headline stops making sense once the rule is gone — let the
+     line flow as ordinary text instead */
+  .headline-tail{display:inline; max-width:none;}
+  .headline-tail > span{display:inline;}
+  .hero-headline{font-size:clamp(32px,8.6vw,60px); letter-spacing:-0.025em;}
+  .hero-lede p{font-size:17px;}
+  .section-head{margin-bottom:36px;}
+  .section-head h2{font-size:clamp(24px,6.4vw,32px);}
+  .stat h3{font-size:clamp(22px,6.2vw,28px);}
+  .process-row{padding:22px 0;}
+}
+
+@media (min-width:1024px){
+  .nav--light .nav-links a{padding:10px 0;}
+}
+
+/* footer columns wrapped 2-then-1 as a flex row; a grid divides evenly */
+@media (max-width:720px){
+  .footer-links{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:24px 20px; width:100%;
+  }
 }
 :focus-visible{outline:2px solid var(--teal); outline-offset:3px;}

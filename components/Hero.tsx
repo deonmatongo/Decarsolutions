@@ -1,5 +1,3 @@
-import FlowDiagram from "./FlowDiagram";
-
 export default function Hero() {
   return (
     <section className="hero--light">
@@ -7,12 +5,14 @@ export default function Hero() {
         <h1 className="hero-headline">
           <span className="headline-lead-line">Four disciplines.</span>
           <span className="headline-split">
-            <span>One</span>
-            <span className="headline-rule" aria-hidden="true" />
+            <span>One</span>{" "}
+            <span className="headline-rule" aria-hidden="true" />{" "}
             {/* explicit lines so the block shrink-wraps its widest line and
-                the rule absorbs the remaining width */}
+                the rule absorbs the remaining width. The {" "} separators are
+                ignored by the flex layout here but supply the spaces when
+                these spans go inline on narrow screens. */}
             <span className="headline-tail">
-              <span>system that</span>
+              <span>system that</span>{" "}
               <span>
                 <em>ships.</em>
               </span>
@@ -34,10 +34,6 @@ export default function Hero() {
               See how we work
             </a>
           </div>
-        </div>
-
-        <div className="flow-panel">
-          <FlowDiagram />
         </div>
       </div>
     </section>
