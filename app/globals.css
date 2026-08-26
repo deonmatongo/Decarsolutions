@@ -344,11 +344,7 @@ nav{
   padding:0 0 clamp(80px,11vw,150px);
 }
 @media (max-width:720px){
-  .headline-split{
-    display:block;
-  }
-  .headline-rule{display:none;}
-  .headline-tail{align-items:flex-start; text-align:left; max-width:100%;}
+  /* the split layout is kept at every size — see the mobile tuning below */
   .hero-lede{flex-direction:column; align-items:stretch;}
 }
 
@@ -648,11 +644,12 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
 /* mobile typography + spacing rhythm */
 @media (max-width:720px){
   .hero--light{padding-top:clamp(48px,11vw,72px);}
-  /* the split headline stops making sense once the rule is gone — let the
-     line flow as ordinary text instead */
-  .headline-tail{display:inline; max-width:none;}
-  .headline-tail > span{display:inline;}
-  .hero-headline{font-size:clamp(32px,8.6vw,60px); letter-spacing:-0.025em;}
+  /* Same lead line / rule / right-aligned tail as the desktop layout. The
+     tail can shrink (min-width:0) so its text rewraps instead of pushing the
+     row wider than the viewport. */
+  .hero-headline{font-size:clamp(29px,8.1vw,60px); letter-spacing:-0.025em;}
+  .headline-split{gap:clamp(12px,3vw,40px);}
+  .headline-rule{min-width:32px;}
   .hero-lede p{font-size:17px;}
   .section-head{margin-bottom:36px;}
   .section-head h2{font-size:clamp(24px,6.4vw,32px);}
