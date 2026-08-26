@@ -1,32 +1,27 @@
+import GenerativeFigure from "./GenerativeFigure";
 import { services } from "@/lib/content";
-import { serviceIcons } from "./ServiceIcons";
 
 export default function Services() {
   return (
-    <section className="section" id="services">
+    <section className="wwd" id="services">
       <div className="wrap">
-        <div className="section-head">
-          <div className="eyebrow">What we do</div>
-          <h2>
-            Every discipline your product needs, working from the same brief.
-          </h2>
-          <p>
-            Most agencies specialize in one layer and leave you to stitch the
-            rest together. Decar builds the whole stack — design, code,
-            intelligence, and the automation that connects it all.
-          </p>
-        </div>
+        <h2 className="wwd-head">
+          Discover how one{" "}
+          {/* the word and the rule can't break apart, so the rule always
+              trails the end of a line rather than indenting the next one */}
+          <span className="wwd-nobreak">
+            team <span className="wwd-rule" aria-hidden="true" />
+          </span>{" "}
+          designs, builds, and automates high-quality web and mobile software
+        </h2>
 
-        <div className="services-grid">
+        <div className="wwd-grid">
           {services.map((service) => (
-            <div className="service-card" key={service.id}>
-              <div className="service-icon">{serviceIcons[service.id]}</div>
+            <article className="wwd-item" key={service.id}>
+              <GenerativeFigure kind={service.figure} />
               <h3>{service.title}</h3>
               <p>{service.body}</p>
-              <a href="#contact" className="service-link">
-                Explore →
-              </a>
-            </div>
+            </article>
           ))}
         </div>
       </div>

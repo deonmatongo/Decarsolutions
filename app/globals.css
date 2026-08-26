@@ -22,6 +22,11 @@
   --amber-deep:#C2760A;
   --teal-deep:#0FA57F;
 
+  /* "what we do" band — neutral near-black, per the reference design */
+  --wwd-bg:#121212;
+  --wwd-ink:#F4F4F5;
+  --wwd-muted:#A1A1A6;
+
   /* flow-diagram palette — defaults are the dark-surface values,
      overridden inside .hero-light */
   --flow-line:rgba(255,255,255,0.14);
@@ -150,8 +155,60 @@ nav{
   background:currentColor;
   transition:transform 0.22s ease, opacity 0.22s ease;
 }
+.burger--always{display:flex;}   /* drawer close button, shown at any width */
 .burger--open .burger-bar:first-child{transform:translateY(4px) rotate(45deg);}
 .burger--open .burger-bar:last-child{transform:translateY(-4px) rotate(-45deg);}
+
+/* ---------- FLOATING CONTROLS (shown once the bar tucks away) ---------- */
+.site-header--tucked{transform:translateY(-100%);}
+.site-header--light{transition:transform 0.32s ease;}
+
+.float-burger,
+.float-cta{
+  position:fixed; z-index:150;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+}
+.float-burger.is-shown,
+.float-cta.is-shown{opacity:1; visibility:visible; pointer-events:auto;}
+
+.float-burger{
+  top:clamp(14px,2vw,24px); right:clamp(16px,3vw,44px);
+  width:clamp(54px,4.6vw,64px); height:clamp(54px,4.6vw,64px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  border:0; border-radius:50%; cursor:pointer;
+  background:var(--ink-1); color:#FFFFFF;
+  box-shadow:0 8px 24px rgba(0,0,0,0.22);
+  transform:translateY(-6px);
+}
+.float-burger.is-shown{transform:none;}
+.float-burger .burger-bar{width:22px; background:currentColor;}
+
+.float-cta{
+  bottom:clamp(18px,2.4vw,34px);
+  display:inline-flex; align-items:center; gap:10px;
+  padding:15px 26px; border-radius:999px;
+  background:var(--ink-1); color:#FFFFFF;
+  font-family:var(--body); font-weight:600; font-size:15px; white-space:nowrap;
+  box-shadow:0 10px 30px rgba(0,0,0,0.26);
+  /* Centred on phones. The centring lives in `transform`, not the standalone
+     `translate` property: that property gets compiled down into `transform`,
+     so a `transform:none` in another state would silently drop the -50% and
+     shove the pill off the right edge. */
+  left:50%; transform:translate(-50%, 6px);
+  max-width:calc(100% - 32px);
+}
+.float-cta.is-shown{transform:translate(-50%, 0);}
+/* tucked to the right once there's room for it beside the content */
+@media (min-width:760px){
+  .float-cta{left:auto; right:clamp(16px,3vw,44px); transform:translateY(6px);}
+  .float-cta.is-shown{transform:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .site-header--light,
+  .float-burger,
+  .float-cta{transition:none;}
+}
 
 .mobile-menu{
   position:fixed; inset:0; z-index:200;
@@ -187,6 +244,13 @@ nav{
 }
 .mobile-menu-foot .btn{justify-content:center;}
 .mobile-menu-foot .lang-switch{justify-content:center;}
+@media (min-width:760px){
+  .mobile-menu{padding-left:clamp(20px,6vw,80px); padding-right:clamp(20px,6vw,80px);}
+  .mobile-menu-links{max-width:640px;}
+  .mobile-menu-links a{font-size:27px; padding:22px 2px;}
+  .mobile-menu-foot{flex-direction:row; align-items:center; gap:28px;}
+  .mobile-menu-foot .btn{flex:0 0 auto;}
+}
 @media (prefers-reduced-motion: reduce){
   .mobile-menu{transition:none;}
   .burger-bar{transition:none;}
@@ -232,56 +296,52 @@ nav{
 }
 .hero-lede .hero-cta{margin-bottom:0;}
 
-/* ---------- MEDIA PANELS (showreel + flow diagram) ---------- */
-/* One shell for both, so identical padding + identical content aspect ratio
-   resolves to identical panel heights at every width. */
-.media-panel{
-  background:var(--paper-1);
-  border:1px solid var(--hairline-soft);
-  border-radius:24px;
-  padding:clamp(28px,4vw,56px) clamp(20px,3vw,40px);
-}
+/* ---------- SHOWREEL ---------- */
+/* Full-bleed: no wrap, no panel, no side padding — width:100% (not 100vw, which
+   would overflow by the scrollbar width). */
 .showreel{
   background:var(--paper-0);
   padding:clamp(48px,6vw,84px) 0 0;
 }
+.showreel-frame{display:block; width:100%;}
 .showreel-video{
-  width:100%; display:block; border-radius:8px;
+  width:100%; display:block;
   object-fit:cover;
-  /* Source is 1920x1080. A fixed ratio at every breakpoint reserves the space
-     up front, so the panel never shifts once the video loads. Taller ratios
-     crop the sides; the frame's content sits within 28.3%-75.8% of its width
-     across the clip, so 1:1 is the tallest crop that clips nothing. */
+  /* Source is 1920x1080. A fixed ratio per breakpoint reserves the space up
+     front, so nothing shifts once the video loads. Taller ratios crop the
+     sides: the subject sits within 28.3%-75.8% of the frame width across the
+     clip, so 1:1 is the tallest crop that clips nothing. */
   aspect-ratio:4 / 3;
 }
-/* Above the diagram's own breakpoint, match the wide diagram's 980x320 content
-   box so the two panels are exactly the same height. The video is 16:9, so
-   cover crops ~1% off the top and bottom of the frame here. */
-@media (min-width:861px){
-  .showreel-video{
-    aspect-ratio:980 / 320;
-    /* .flow caps the diagram at 980px, so the video needs the same cap or the
-       two panels drift apart on wide screens */
-    max-width:980px; margin-inline:auto;
-  }
+/* At full width 16:9 is both the tallest useful ratio and the source's own,
+   so the desktop video is large and completely uncropped. */
+@media (min-width:1024px){
+  .showreel-video{aspect-ratio:16 / 9;}
 }
 
 /* The light-surface palette lives on the panel holding the diagram, so it
    applies wherever that panel is placed (it used to hang off .hero--light). */
+/* The diagram sits in the near-black "what we do" band, so it carries a dark
+   shell and the dark-surface palette. */
 .flow-panel{
-  --flow-line:rgba(14,21,36,0.18);
-  --flow-node-fill:#FFFFFF;
-  --flow-node-stroke:rgba(14,21,36,0.16);
-  --flow-label:var(--ink-2);
-  --flow-label-strong:var(--ink-1);
-  --flow-pulse:var(--teal-deep);
-  --flow-accent:var(--teal-deep);
-  --flow-glow:0 0 5px rgba(15,165,127,0.45);
+  background:rgba(255,255,255,0.028);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:24px;
+  padding:clamp(28px,4vw,56px) clamp(20px,3vw,40px);
+  --flow-line:rgba(255,255,255,0.17);
+  --flow-node-fill:#1C1C20;
+  --flow-node-stroke:rgba(255,255,255,0.2);
+  --flow-label:var(--wwd-muted);
+  --flow-label-strong:var(--wwd-ink);
+  --flow-pulse:var(--teal);
+  --flow-accent:var(--teal);
+  --flow-glow:0 0 6px var(--teal);
 }
 
+/* continues the band above it, so only the trailing gap is its own */
 .flow-section{
-  background:var(--paper-0);
-  padding:clamp(20px,2.5vw,32px) 0 clamp(64px,8vw,112px);
+  background:var(--wwd-bg);
+  padding:0 0 clamp(80px,11vw,150px);
 }
 @media (max-width:720px){
   .headline-split{
@@ -353,19 +413,6 @@ nav{
 .node-label.strong{fill:var(--flow-label-strong); font-weight:500;}
 .hub-label{font-family:var(--display); font-weight:700; font-size:16px; fill:#0E1524;}
 
-/* ---------- STATS STRIP ---------- */
-.stats{
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-  padding:36px 0;
-}
-.stats .wrap{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
-}
-.stat h3{
-  font-family:var(--display); font-size:28px; color:var(--amber); margin-bottom:4px;
-}
-.stat p{font-size:13px; color:var(--muted);}
-
 /* ---------- SECTION HEADERS ---------- */
 .section{padding:clamp(64px,9vw,100px) 0;}
 .section-flush-top{padding-top:0;}
@@ -377,27 +424,79 @@ nav{
 }
 .section-head p{color:var(--muted); font-size:16px; margin-top:16px;}
 
-/* ---------- SERVICES ---------- */
-.services-grid{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+/* ---------- WHAT WE DO ---------- */
+.wwd{
+  background:var(--wwd-bg);
+  padding:clamp(80px,11vw,150px) 0;
 }
-.service-card{
-  background:var(--panel); padding:36px 28px; transition:background 0.25s;
+.wwd-head{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(30px,6.4vw,54px); line-height:1.16;
+  letter-spacing:-0.02em; color:var(--wwd-ink);
+  max-width:900px;
+  margin-bottom:clamp(64px,9vw,120px);
 }
-.service-card:hover{background:var(--panel-2);}
-.service-icon{
-  width:38px; height:38px; margin-bottom:24px;
-  display:flex; align-items:center; justify-content:center;
+/* hairline set into the sentence, so the text wraps around it */
+.wwd-nobreak{white-space:nowrap;}
+.wwd-rule{
+  display:inline-block; vertical-align:middle;
+  width:clamp(80px,20vw,230px); height:1px;
+  background:rgba(255,255,255,0.45);
+  margin:0 0.18em 0.12em;
 }
-.service-card h3{
-  font-family:var(--display); font-size:19px; font-weight:600; margin-bottom:10px;
+.wwd-grid{
+  display:grid; grid-template-columns:1fr;
+  gap:clamp(64px,9vw,112px) clamp(40px,6vw,88px);
 }
-.service-card p{font-size:14px; color:var(--muted); margin-bottom:10px;}
-.service-link{
-  font-family:var(--mono); font-size:12px; color:var(--teal);
-  display:inline-flex; align-items:center; gap:6px;
-  padding:12px 0;              /* >=24px tap target (WCAG 2.5.8) */
+.wwd-figure{
+  display:block; width:clamp(112px,30vw,152px); height:auto;
+  overflow:visible;            /* non-scaling strokes can sit on the edge */
+}
+/* --- figure animation (cycle lengths mirrored in GenerativeFigure.tsx) --- */
+.fig-torus{animation:fig-spin 48s linear infinite;}
+@keyframes fig-spin{to{transform:rotate(360deg);}}
+
+/* a highlight sweeping around the spokes */
+.fig-shimmer{animation:fig-shimmer 4.5s ease-in-out infinite;}
+@keyframes fig-shimmer{
+  0%,100%{stroke-opacity:1;}
+  50%{stroke-opacity:0.22;}
+}
+
+/* a wave running down the coil; scaled about each ring's own centre */
+.fig-wave{
+  transform-box:fill-box; transform-origin:center;
+  animation:fig-wave 3.6s ease-in-out infinite;
+}
+@keyframes fig-wave{
+  0%,100%{transform:scaleX(1);}
+  50%{transform:scaleX(0.9);}
+}
+
+/* meridians sweeping through the full width range reads as an axial spin */
+.fig-meridian{animation:fig-meridian 26s ease-in-out infinite;}
+@keyframes fig-meridian{
+  0%,100%{rx:82px;}
+  50%{rx:0px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .fig-torus, .fig-shimmer, .fig-wave, .fig-meridian{animation:none;}
+}
+
+.wwd-item h3{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(24px,5.6vw,31px); line-height:1.2; letter-spacing:-0.015em;
+  color:var(--wwd-ink);
+  margin-top:clamp(28px,5vw,44px);
+}
+.wwd-item p{
+  font-size:clamp(15px,3.9vw,17px); line-height:1.62;
+  color:var(--wwd-muted); max-width:44ch;
+  margin-top:14px;
+}
+@media (min-width:760px){
+  .wwd-grid{grid-template-columns:repeat(2,1fr);}
 }
 
 /* ---------- WHY ---------- */
@@ -522,14 +621,12 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
 }
 @media (max-width:720px){
   .flow--mobile{max-width:340px;}
-  .media-panel{padding:24px 16px;}
+  .flow-panel{padding:24px 16px;}
 }
 
 @media (max-width:900px){
-  .services-grid{grid-template-columns:repeat(2,1fr);}
   .why-grid{grid-template-columns:repeat(2,1fr);}
   .work-grid{grid-template-columns:1fr;}
-  .stats .wrap{grid-template-columns:repeat(2,1fr);}
   .process-row{grid-template-columns:50px 1fr; grid-template-areas:"num title" "num desc";}
   .process-row p{grid-column:2;}
 }
@@ -537,10 +634,7 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
   .wrap{padding:0 20px;}
   .nav--light{padding:14px 20px;}
   .mobile-menu{padding-left:20px; padding-right:20px;}
-  .services-grid{grid-template-columns:1fr;}
-  .service-card{padding:30px 22px;}
   .why-grid{grid-template-columns:1fr;}
-  .stats .wrap{grid-template-columns:1fr 1fr;}
   .hero{padding-top:64px;}
   .hero-cta{flex-direction:column;}
   .hero-cta .btn{justify-content:center;}
@@ -548,7 +642,7 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
   /* tallest crop that keeps the whole subject, so the video is as large as it
      can get on a phone */
   .showreel-video{aspect-ratio:1 / 1;}
-  .media-panel{border-radius:16px; padding:20px 16px;}
+  .flow-panel{border-radius:16px; padding:20px 16px;}
 }
 
 /* mobile typography + spacing rhythm */
@@ -562,7 +656,6 @@ footer{border-top:1px solid var(--line); padding:clamp(36px,6vw,48px) 0;}
   .hero-lede p{font-size:17px;}
   .section-head{margin-bottom:36px;}
   .section-head h2{font-size:clamp(24px,6.4vw,32px);}
-  .stat h3{font-size:clamp(22px,6.2vw,28px);}
   .process-row{padding:22px 0;}
 }
 

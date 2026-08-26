@@ -1,3 +1,5 @@
+import type { FigureKind } from "@/components/GenerativeFigure";
+
 // Nav mirrors the reference design. Items with `href: "#"` have no
 // destination in this project yet — point them at real routes as you build them.
 export const navLinks: {
@@ -13,15 +15,9 @@ export const navLinks: {
   { href: "#", label: "Blog" },
 ];
 
-export const stats = [
-  { value: "4", label: "disciplines under one roof" },
-  { value: "1", label: "point of contact, start to finish" },
-  { value: "Weekly", label: "delivery & demo cadence" },
-  { value: "Post-launch", label: "support included, not upsold" },
-];
-
 export type Service = {
   id: string;
+  figure: FigureKind;
   title: string;
   body: string;
 };
@@ -29,23 +25,27 @@ export type Service = {
 export const services: Service[] = [
   {
     id: "web",
+    figure: "globe",
     title: "Web Development",
-    body: "Marketing sites, e-commerce, and web apps built on modern frameworks and made to be fast on day one and day 1,000.",
+    body: "Marketing sites, e-commerce, and web apps built on modern frameworks and made to be fast on day one and day 1,000",
   },
   {
     id: "mobile",
+    figure: "barrel",
     title: "Mobile Development",
-    body: "Native iOS and Android, or cross-platform when speed matters more than platform-native polish. Your call, our craft.",
+    body: "Native iOS and Android, or cross-platform when speed matters more than platform-native polish — your call, our craft",
   },
   {
     id: "ai",
+    figure: "burst",
     title: "AI Solutions",
-    body: "Chatbots, copilots, and predictive tools built where AI actually earns its keep — not bolted on for the pitch deck.",
+    body: "Chatbots, copilots, and predictive tools built where AI actually earns its keep, not bolted on for the pitch deck",
   },
   {
     id: "automation",
+    figure: "torus",
     title: "Automation",
-    body: "Workflows that connect your CRM, ops, and reporting so your team stops copy-pasting between tabs for a living.",
+    body: "Workflows that connect your CRM, ops, and reporting so your team stops copy-pasting between tabs for a living",
   },
 ];
 

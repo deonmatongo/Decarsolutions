@@ -20,21 +20,20 @@ export default function Showreel() {
   }, []);
 
   return (
+    // full-bleed: no .wrap, so the video runs edge to edge
     <section className="showreel" aria-label="Showreel">
-      <div className="wrap">
-        <div className="showreel-frame media-panel">
-          <video
-            ref={videoRef}
-            className="showreel-video"
-            src="/desktop-showreel.mp4"
-            autoPlay={!reducedMotion}
-            controls={reducedMotion}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          />
-        </div>
+      <div className="showreel-frame">
+        <video
+          ref={videoRef}
+          className="showreel-video"
+          src="/desktop-showreel.mp4"
+          autoPlay={!reducedMotion}
+          controls={reducedMotion}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
       </div>
     </section>
   );

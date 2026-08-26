@@ -2,7 +2,6 @@ import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
 import Showreel from "@/components/Showreel";
 import FlowSection from "@/components/FlowSection";
-import Stats from "@/components/Stats";
 import Services from "@/components/Services";
 import WhyDecar from "@/components/WhyDecar";
 import Process from "@/components/Process";
@@ -17,9 +16,8 @@ export default function Home() {
       <SiteHeader />
       <Hero />
       <Showreel />
-      <FlowSection />
-      <Stats />
       <Services />
+      <FlowSection />
       <WhyDecar />
       <Process />
       <Work />

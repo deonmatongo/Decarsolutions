@@ -5,7 +5,7 @@ export default function FlowSection() {
   return (
     <section className="flow-section">
       <div className="wrap">
-        <div className="flow-panel media-panel">
+        <div className="flow-panel">
           <FlowDiagram />
           <FlowDiagramMobile />
         </div>
