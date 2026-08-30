@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import { navLinks } from "@/lib/content";
 
@@ -60,6 +61,8 @@ function CalendarIcon() {
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [atContact, setAtContact] = useState(false);
+  const pathname = usePathname();
 
   // Past the threshold the bar slides away and the floating burger + booking
   // pill take over, on every viewport size.
@@ -69,6 +72,23 @@ export default function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // The booking pill retires once the contact section is on screen: it is
+  // redundant there, and fixed to the viewport bottom it would sit on top of
+  // the footer's legal links.
+  useEffect(() => {
+    const target = document.getElementById("contact");
+    if (!target) {
+      setAtContact(false);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setAtContact(entry.isIntersecting),
+      { rootMargin: "0px 0px -15% 0px" }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   // Close on Escape and lock background scroll while the drawer is open.
   useEffect(() => {
@@ -100,6 +120,7 @@ export default function SiteHeader() {
   }, []);
 
   const floatingShown = scrolled && !open;
+  const ctaShown = floatingShown && !atContact;
 
   return (
     <>
@@ -119,7 +140,7 @@ export default function SiteHeader() {
           </div>
 
           <div className="nav-actions">
-            <a href="#contact" className="btn btn-pill btn-ink nav-cta">
+            <a href="/contact" className="btn btn-pill btn-ink nav-cta">
               Contact Us
             </a>
             <span className="lang-switch">
@@ -161,10 +182,10 @@ export default function SiteHeader() {
       </button>
 
       <a
-        href="#contact"
-        className={`float-cta${floatingShown ? " is-shown" : ""}`}
-        tabIndex={floatingShown ? 0 : -1}
-        aria-hidden={!floatingShown}
+        href="/contact"
+        className={`float-cta${ctaShown ? " is-shown" : ""}`}
+        tabIndex={ctaShown ? 0 : -1}
+        aria-hidden={!ctaShown}
         data-float-cta
       >
         <CalendarIcon />
@@ -201,7 +222,7 @@ export default function SiteHeader() {
 
         <div className="mobile-menu-foot">
           <a
-            href="#contact"
+            href="/contact"
             className="btn btn-pill btn-ink btn-lg"
             onClick={() => setOpen(false)}
           >

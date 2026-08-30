@@ -151,8 +151,16 @@ const BUILDERS: Record<FigureKind, (id: string) => React.ReactNode> = {
   globe,
 };
 
-export default function GenerativeFigure({ kind }: { kind: FigureKind }) {
-  const id = `fig-grad-${kind}`;
+export default function GenerativeFigure({
+  kind,
+  idSuffix,
+}: {
+  kind: FigureKind;
+  // A figure can appear in more than one section, and each SVG needs its own
+  // gradient id — pass a suffix wherever a kind is reused on the page.
+  idSuffix?: string;
+}) {
+  const id = `fig-grad-${idSuffix ?? kind}`;
   return (
     <svg
       className={`wwd-figure fig-${kind}`}

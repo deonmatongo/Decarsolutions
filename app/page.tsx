@@ -1,29 +1,33 @@
-import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
 import Showreel from "@/components/Showreel";
-import FlowSection from "@/components/FlowSection";
+import ClientMarquee from "@/components/ClientMarquee";
+import ValueStatement from "@/components/ValueStatement";
 import Services from "@/components/Services";
-import WhyDecar from "@/components/WhyDecar";
+import FlowSection from "@/components/FlowSection";
+import TailoredSolutions from "@/components/TailoredSolutions";
+import Benefits from "@/components/Benefits";
 import Process from "@/components/Process";
 import Work from "@/components/Work";
+import Team from "@/components/Team";
 import Faq from "@/components/Faq";
 import FinalCta from "@/components/FinalCta";
-import SiteFooter from "@/components/SiteFooter";
 
 export default function Home() {
   return (
     <>
-      <SiteHeader />
       <Hero />
       <Showreel />
+      <ClientMarquee />
+      <ValueStatement />
       <Services />
       <FlowSection />
-      <WhyDecar />
+      <TailoredSolutions />
+      <Benefits />
       <Process />
       <Work />
+      <Team />
       <Faq />
       <FinalCta />
-      <SiteFooter />
     </>
   );
 }

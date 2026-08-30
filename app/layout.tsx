@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -45,7 +47,11 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

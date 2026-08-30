@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { workItems } from "@/lib/content";
 
 export default function Work() {
@@ -5,8 +6,8 @@ export default function Work() {
     <section className="section" id="work">
       <div className="wrap">
         <div className="section-head">
-          <div className="eyebrow">Selected work</div>
-          <h2>A sample of the kind of systems we build.</h2>
+          <div className="eyebrow">Case studies</div>
+          <h2>Our work</h2>
           <p>
             Swap these for your real case studies as they land — keep the same
             structure: challenge, build, result.
@@ -17,7 +18,7 @@ export default function Work() {
         </span>
         <div className="work-grid">
           {workItems.map((item) => (
-            <div className="work-card" key={item.title}>
+            <Link href={`/work/${item.slug}`} className="work-card" key={item.slug}>
               <div className="work-thumb">Project thumbnail</div>
               <div className="work-body">
                 <div className="work-tags">
@@ -30,8 +31,13 @@ export default function Work() {
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
               </div>
-            </div>
+            </Link>
           ))}
+        </div>
+        <div className="work-more">
+          <Link href="/work" className="btn btn-ghost">
+            See all case studies →
+          </Link>
         </div>
       </div>
     </section>
